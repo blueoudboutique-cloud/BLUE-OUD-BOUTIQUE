@@ -89,7 +89,39 @@ header.boutique-header{position:relative!important;top:auto!important;z-index:10
 #hero{width:100%!important;max-width:none!important;margin:0!important;border-radius:0!important;border:0!important;box-shadow:none!important;height:clamp(190px,53vw,510px)!important}
 #categories{margin-top:12px!important}
 @media(max-width:760px){.header-ad,#hero{height:clamp(190px,55vw,300px)!important}.header-ads{padding:0!important}.header-ad{border-radius:0!important}}
-</style></head><body><header class="boutique-header"><div class="wrap head"><button class="searchbtn" onclick="searchProducts()" aria-label="البحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button><a class="brand" href="#home" id="brand">بوتيك العود الأزرق<small>BLUE OUD BOUTIQUE</small></a><div class="tools"><button onclick="showFavorites()" title="المفضلة" aria-label="المفضلة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20.8 4.8a5.4 5.4 0 0 0-7.6 0L12 6l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.6a5.4 5.4 0 0 0 0-7.6Z"/></svg></button></div></div><div class="ticker"><span id="ticker">مرحباً بكم في بوتيك العود الأزرق</span></div></header><main id="home"><div class="header-ads" id="headerAds" aria-label="الإعلانات"></div><div class="hero" id="hero" hidden><div class="emptyhero">بوتيك العود الأزرق<br>BLUE OUD BOUTIQUE</div></div><div class="wrap"><section class="section" id="categories"><h2>تسوق حسب الفئة</h2><div class="cats" id="cats"></div></section><section class="section" id="secondaryAdSection" hidden><div id="ad2" class="ad emptyad">مساحة إعلانية قابلة للإدارة</div></section><div id="sections"></div><section class="section" id="scents"><h2>اكتشف الروائح</h2><div class="scents" id="scentsList"></div></section><section class="section" id="products"><h2>جميع المنتجات</h2><div class="grid" id="allProducts"></div></section><section class="section" id="tertiaryAdSection" hidden><div id="ad3" class="ad emptyad">مساحة إعلانية قابلة للإدارة</div></section></div></main><nav class="bottom-dock" aria-label="التنقل الرئيسي"><button type="button" id="detailsButton" aria-label="تفاصيل المتجر" title="تفاصيل المتجر">•••<small>تفاصيل</small></button><a href="cart.html" aria-label="سلة التسوق" title="السلة"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11h11l2.2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><small>السلة <span id="cartCount">0</span></small></a><a class="trending-button" href="#trending" id="trendingDock" aria-label="الرائج"><span class="ray">✦</span><small>رائج</small></a><a href="#categories" aria-label="الفئات"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><small>الفئات</small></a><a href="#products" aria-label="تسوق"><svg viewBox="0 0 24 24"><path d="M4 9h16l-1 12H5L4 9ZM8 9V7a4 4 0 0 1 8 0v2"/></svg><small>تسوق</small></a></nav><footer><div class="wrap"><h3 id="footerName">بوتيك العود الأزرق</h3><p id="footerAbout">عالم العود والعطور الفاخرة</p><p>سياسة الخصوصية · الشحن · الاستبدال والاسترجاع · الشروط والأحكام</p><small>© <span id="year"></span> جميع الحقوق محفوظة</small> · </div></footer><dialog id="modal"><button class="close" onclick="modal.close()">✕</button><div id="modalContent"></div></dialog><div class="toast" id="toast"></div><script type="module">
+</style><style id="blue-oud-footer-v1">
+/* Boutique footer: isolated styles preserve existing brown/sky-blue theme. */
+.boutique-footer{background:#39271f!important;color:#fff5ec!important;padding:34px 0 calc(115px + env(safe-area-inset-bottom))!important;margin-top:34px;border-top:3px solid #74d6ed!important}
+.boutique-footer .footer-shell{max-width:980px;margin:auto;padding:0 20px}
+.boutique-footer .footer-brand{display:flex;align-items:center;gap:13px;margin-bottom:10px}
+.boutique-footer .footer-mark{display:grid;place-items:center;width:49px;height:49px;flex:0 0 49px;border-radius:15px;background:#ffffff16;border:1px solid #87dff180;color:#91e5f7;font-size:27px}
+.boutique-footer #footerName{font-size:21px;margin:0;color:#a6ebfb}
+.boutique-footer #footerAbout{font-size:13px;line-height:1.9;color:#f0dfd2;margin:6px 0 22px}
+.boutique-footer .footer-title{font-size:15px;font-weight:800;color:#a6ebfb;margin:22px 0 12px}
+.boutique-footer .footer-shopping{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 20px;margin-bottom:18px}
+.boutique-footer a,.boutique-footer .footer-link{color:#fff5ec!important;text-decoration:none;font-size:13px}
+.boutique-footer a:hover,.boutique-footer .footer-link:hover{color:#99e6f9!important}
+.boutique-footer .footer-accordion{border-top:1px solid #ffffff25}
+.boutique-footer .footer-accordion:last-of-type{border-bottom:1px solid #ffffff25}
+.boutique-footer summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;list-style:none;min-height:52px;color:#f8ede4;font-size:14px;font-weight:700}
+.boutique-footer summary::-webkit-details-marker{display:none}
+.boutique-footer summary::after{content:'⌄';color:#95e5f5;font-size:21px;transition:transform .2s}
+.boutique-footer details[open] summary::after{transform:rotate(180deg)}
+.boutique-footer .footer-panel{display:grid;gap:13px;padding:0 4px 18px}
+.boutique-footer .footer-link{background:none;border:0;padding:0;text-align:right;cursor:pointer;display:block;width:fit-content}
+.boutique-footer .footer-bottom{border-top:1px solid #ffffff25;margin-top:23px;padding-top:16px;text-align:center;font-size:11px;color:#ddcabe;line-height:1.8}
+.boutique-footer .footer-contact{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.boutique-footer .footer-contact a{border:1px solid #ffffff36;padding:9px 13px;border-radius:12px}
+@media(min-width:850px){.boutique-footer .footer-columns{display:grid;grid-template-columns:1fr 1fr;gap:42px}.boutique-footer .footer-shopping{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){.boutique-footer summary::after{transition:none}}
+</style></head><body><header class="boutique-header"><div class="wrap head"><button class="searchbtn" onclick="searchProducts()" aria-label="البحث"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg></button><a class="brand" href="#home" id="brand">بوتيك العود الأزرق<small>BLUE OUD BOUTIQUE</small></a><div class="tools"><button onclick="showFavorites()" title="المفضلة" aria-label="المفضلة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M20.8 4.8a5.4 5.4 0 0 0-7.6 0L12 6l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.6a5.4 5.4 0 0 0 0-7.6Z"/></svg></button></div></div><div class="ticker"><span id="ticker">مرحباً بكم في بوتيك العود الأزرق</span></div></header><main id="home"><div class="header-ads" id="headerAds" aria-label="الإعلانات"></div><div class="hero" id="hero" hidden><div class="emptyhero">بوتيك العود الأزرق<br>BLUE OUD BOUTIQUE</div></div><div class="wrap"><section class="section" id="categories"><h2>تسوق حسب الفئة</h2><div class="cats" id="cats"></div></section><section class="section" id="secondaryAdSection" hidden><div id="ad2" class="ad emptyad">مساحة إعلانية قابلة للإدارة</div></section><div id="sections"></div><section class="section" id="scents"><h2>اكتشف الروائح</h2><div class="scents" id="scentsList"></div></section><section class="section" id="products"><h2>جميع المنتجات</h2><div class="grid" id="allProducts"></div></section><section class="section" id="tertiaryAdSection" hidden><div id="ad3" class="ad emptyad">مساحة إعلانية قابلة للإدارة</div></section></div></main><nav class="bottom-dock" aria-label="التنقل الرئيسي"><button type="button" id="detailsButton" aria-label="تفاصيل المتجر" title="تفاصيل المتجر">•••<small>تفاصيل</small></button><a href="cart.html" aria-label="سلة التسوق" title="السلة"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11h11l2.2-8H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><small>السلة <span id="cartCount">0</span></small></a><a class="trending-button" href="#trending" id="trendingDock" aria-label="الرائج"><span class="ray">✦</span><small>رائج</small></a><a href="#categories" aria-label="الفئات"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><small>الفئات</small></a><a href="#products" aria-label="تسوق"><svg viewBox="0 0 24 24"><path d="M4 9h16l-1 12H5L4 9ZM8 9V7a4 4 0 0 1 8 0v2"/></svg><small>تسوق</small></a></nav><footer class="boutique-footer" aria-label="معلومات المتجر وروابطه"><div class="footer-shell">
+<div class="footer-brand"><span class="footer-mark" aria-hidden="true">✦</span><h3 id="footerName">بوتيك العود الأزرق</h3></div>
+<p id="footerAbout">عالم العود والعطور الفاخرة</p>
+<div class="footer-columns"><div><h4 class="footer-title">تسوق</h4><div class="footer-shopping"><a href="#home">الرئيسية</a><a href="#categories">الفئات</a><a href="#products">جميع المنتجات</a><a href="#offers">العروض</a><a href="cart.html">سلة التسوق</a><a href="cart.html#track">تتبع الطلب</a></div></div>
+<div><details class="footer-accordion"><summary>المساعدة والسياسات</summary><div class="footer-panel"><button class="footer-link" type="button" data-policy="privacy-policy">سياسة الخصوصية</button><button class="footer-link" type="button" data-policy="terms-and-conditions">الشروط والأحكام</button><button class="footer-link" type="button" data-policy="shipping-policy">الشحن والتوصيل</button><button class="footer-link" type="button" data-policy="return-policy">الاستبدال والاسترجاع</button><button class="footer-link" type="button" data-policy="faq">الأسئلة الشائعة</button></div></details>
+<details class="footer-accordion"><summary>عن المتجر</summary><div class="footer-panel"><button class="footer-link" type="button" data-policy="about-us">من نحن</button><a href="cart.html#track">متابعة الطلب</a></div></details></div></div>
+<div class="footer-bottom">© <span id="year"></span> بوتيك العود الأزرق — جميع الحقوق محفوظة</div>
+</div></footer><dialog id="modal"><button class="close" onclick="modal.close()">✕</button><div id="modalContent"></div></dialog><div class="toast" id="toast"></div><script type="module">
 import {supabase, getCart, setCart, money, safe} from './supabase-config.js';
 const $=id=>document.getElementById(id);
 const escapeHTML=safe;
@@ -121,6 +153,31 @@ function renderHeaderBanners(){const host=$('headerAds');if(!host)return;if(!hea
 async function loadHeaderBanners(){try{const {data,error}=await supabase.from('banners').select('*').eq('active',true).order('sort_order');if(error)throw error;headerBanners=data||[];renderHeaderBanners();clearInterval(headerTimer);if(headerBanners.length>1)headerTimer=setInterval(()=>{activeHeaderBanner=(activeHeaderBanner+1)%headerBanners.length;renderHeaderBanners()},5500)}catch(e){console.warn('Banner loading:',e.message);$('hero').hidden=false}}
 document.addEventListener('click',e=>{const b=e.target.closest('[data-banner]');if(b){activeHeaderBanner=Number(b.dataset.banner);renderHeaderBanners()}});
 $('detailsButton')?.addEventListener('click',()=>openModal(`<h2>تفاصيل المتجر</h2><p>بوتيك العود الأزرق — عالم العود والعطور الفاخرة</p><p><a href="cart.html#track">تتبع الطلب</a></p><p><a href="#scents">الروائح</a></p>`));
+
+
+// Footer policies: retrieve published content from the admin-managed pages table.
+// Missing pages are never replaced with invented legal terms.
+const policyTitles={'privacy-policy':'سياسة الخصوصية','terms-and-conditions':'الشروط والأحكام','shipping-policy':'الشحن والتوصيل','return-policy':'الاستبدال والاسترجاع','faq':'الأسئلة الشائعة','about-us':'من نحن'};
+const policyAliases={'privacy-policy':['privacy','privacy-policy'],'terms-and-conditions':['terms','terms-and-conditions'],'shipping-policy':['shipping','shipping-policy'],'return-policy':['returns','return-policy','refund-policy'],'faq':['faq'],'about-us':['about','about-us']};
+const policyCache=new Map();
+async function openPolicy(key){
+  const title=policyTitles[key];if(!title)return;
+  openModal(`<h2>${escapeHTML(title)}</h2><p>جارٍ تحميل الصفحة...</p>`);
+  try{
+    let page=policyCache.get(key);
+    if(!page){
+      const {data,error}=await supabase.from('pages').select('name,slug,description,active').in('slug',policyAliases[key]).eq('active',true).limit(10);
+      if(error)throw error;
+      page=(data||[]).find(x=>x.slug===key)||(data||[])[0]||null;
+      if(page)policyCache.set(key,page);
+    }
+    const content=page?.description?.trim();
+    $('modalContent').innerHTML=`<h2>${escapeHTML(page?.name||title)}</h2>${content?`<div style="white-space:pre-wrap;line-height:2;overflow-wrap:anywhere">${escapeHTML(content)}</div>`:'<p>لم تُنشر هذه الصفحة بعد. يمكنك إضافتها من لوحة الإدارة ضمن «الصفحات والسياسات».</p>'}`;
+  }catch(error){console.error('Policy page:',error);$('modalContent').innerHTML=`<h2>${escapeHTML(title)}</h2><p>تعذر تحميل الصفحة حاليًا. حاول مجددًا لاحقًا.</p>`;}
+}
+document.querySelector('.boutique-footer')?.addEventListener('click',event=>{
+ const button=event.target.closest('[data-policy]');if(button)void openPolicy(button.dataset.policy);
+});
 
 load();loadHeaderBanners();
 </script></body></html>
