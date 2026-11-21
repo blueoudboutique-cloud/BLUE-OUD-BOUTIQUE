@@ -1,5 +1,48 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>الإدارة | بوتيك العود الأزرق</title><link id="storeStyles" href="style.css" rel="stylesheet"/><style>body{font-family:system-ui,Tahoma,sans-serif} .hide{display:none!important}.notice{padding:12px;border-radius:12px;margin:12px 0;background:#e5f6ed;color:#145a36}.notice.error{background:#ffe9e9;color:#9b2222}button:disabled{opacity:.55;cursor:wait}</style></head><body><header><div class="bar"><a class="brand" href="index.html">بوتيك العود الأزرق<small>لوحة الإدارة</small></a><nav><a class="pill" href="index.html">فتح المتجر</a><button class="hide" id="logout">تسجيل الخروج</button></nav></div></header><main><div id="message" role="status"></div><section class="glass" id="loginPanel" style="max-width:480px;margin:30px auto"><h1>تسجيل دخول المدير</h1><form id="login"><label>البريد الإلكتروني<input autocomplete="username" name="email" required="" type="email"/></label><label>كلمة المرور<input autocomplete="current-password" minlength="6" name="password" required="" type="password"/></label><button class="primary">دخول</button></form><button type="button" id="forgotPassword" style="margin-top:12px;background:transparent;border:0;text-decoration:underline;cursor:pointer;color:inherit">نسيت كلمة المرور؟</button><form id="recoveryRequest" class="hide" style="margin-top:16px"><label>البريد الإلكتروني لاستعادة كلمة المرور<input name="recovery_email" type="email" autocomplete="email" required></label><button class="primary" type="submit">إرسال رابط الاستعادة</button><button type="button" id="cancelRecovery">رجوع</button></form></section><div class="hide" id="dashboard"><h1>إدارة المتجر</h1><nav class="row" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between"><button data-tab="products">المنتجات</button><button data-tab="categories">الأقسام</button><button data-tab="orders">الطلبات</button><button data-tab="settings">الإعدادات</button><button data-tab="banners">شاشة الإعلانات</button><button data-tab="scents">الروائح</button><button data-tab="features">مزايا المتجر</button><button data-tab="pages">الصفحات والسياسات</button></nav><section class="glass"><h2 id="formTitle"></h2><div id="formArea"></div></section><section class="glass"><h2>السجلات</h2><div id="records"></div></section></div></main><script type="module">
+<html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>الإدارة | بوتيك العود الأزرق</title><link id="storeStyles" href="style.css" rel="stylesheet"/><style>body{font-family:system-ui,Tahoma,sans-serif} .hide{display:none!important}.notice{padding:12px;border-radius:12px;margin:12px 0;background:#e5f6ed;color:#145a36}.notice.error{background:#ffe9e9;color:#9b2222}button:disabled{opacity:.55;cursor:wait}</style></head><body><header><div class="bar"><a class="brand" href="index.html">بوتيك العود الأزرق<small>لوحة الإدارة</small></a><nav><a class="pill" href="index.html">فتح المتجر</a><button class="hide" id="logout">تسجيل الخروج</button></nav></div></header><main><div id="message" role="status"></div><section class="glass" id="loginPanel" style="max-width:480px;margin:30px auto"><h1>تسجيل دخول المدير</h1><form id="login"><label>البريد الإلكتروني<input autocomplete="username" name="email" required="" type="email"/></label><label>كلمة المرور<input autocomplete="current-password" minlength="6" name="password" required="" type="password"/></label><button class="primary">دخول</button></form><button type="button" id="forgotPassword" style="margin-top:12px;background:transparent;border:0;text-decoration:underline;cursor:pointer;color:inherit">نسيت كلمة المرور؟</button><form id="recoveryRequest" class="hide" style="margin-top:16px"><label>البريد الإلكتروني لاستعادة كلمة المرور<input name="recovery_email" type="email" autocomplete="email" required></label><button class="primary" type="submit">إرسال رابط الاستعادة</button><button type="button" id="cancelRecovery">رجوع</button></form></section><div class="hide" id="dashboard"><h1>إدارة المتجر</h1><nav class="row" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between"><button data-tab="products">المنتجات</button><button data-tab="categories">الأقسام</button><button data-tab="orders">الطلبات</button><button data-tab="settings">الإعدادات</button><button data-tab="banners">شاشة الإعلانات</button><button data-tab="scents">الروائح</button><button data-tab="features">مزايا المتجر</button><button data-tab="pages">الصفحات والسياسات</button></nav><section class="glass"><h2 id="formTitle"></h2><div id="formArea"></div></section><section class="glass"><h2>السجلات</h2><div id="records"></div></section></div></main><script>
+// The recovery UI is independent of the admin module so the button still works
+// when a database query or module import fails.
+(() => {
+  const byId = id => document.getElementById(id);
+  const showRecovery = () => {
+    byId('login').classList.add('hide');
+    byId('forgotPassword').classList.add('hide');
+    byId('recoveryRequest').classList.remove('hide');
+    byId('recoveryRequest').querySelector('[name="recovery_email"]').value =
+      byId('login').querySelector('[name="email"]').value || '';
+  };
+  byId('forgotPassword').addEventListener('click', showRecovery);
+  byId('cancelRecovery').addEventListener('click', () => {
+    byId('recoveryRequest').classList.add('hide');
+    byId('login').classList.remove('hide');
+    byId('forgotPassword').classList.remove('hide');
+  });
+  byId('recoveryRequest').addEventListener('submit', async event => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const button = form.querySelector('[type="submit"]');
+    const notice = byId('message');
+    button.disabled = true;
+    notice.className = 'notice';
+    notice.textContent = 'جارٍ إرسال رابط الاستعادة…';
+    try {
+      const email = String(new FormData(form).get('recovery_email') || '').trim();
+      if (!email || !form.reportValidity()) return;
+      const { supabase } = await import('../supabase-config.js');
+      const redirectTo = new URL('../reset-password.html', location.href).href;
+      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+      if (error) throw error;
+      notice.textContent = 'تم إرسال الطلب. افحص البريد الوارد والرسائل غير المرغوبة، واستخدم أحدث رابط.';
+    } catch (error) {
+      notice.className = 'notice error';
+      notice.textContent = 'تعذر إرسال رابط الاستعادة: ' + (error?.message || String(error));
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+</script>
+<script type="module">
 // Supports admin.html at repository root OR one subfolder below it.
 const base = location.pathname.split('/').filter(Boolean);
 const inSubfolder = base.length > 2; // GitHub Pages: /repo/admin.html vs /repo/folder/admin.html
@@ -10,9 +53,6 @@ const {supabase,money,safe,report} = await import(prefix + 'supabase-config.js')
 const $=id=>document.getElementById(id);let tab='products',editing=null,products=[],categories=[],orders=[],settings=[],extras={banners:[],scents:[],features:[],pages:[]};function msg(t,bad=false){$('message').className='notice'+(bad?' error':'');$('message').textContent=t}function option(id,selected){return categories.map(c=>`<option value="${c.id}" ${c.id===selected?'selected':''}>${safe(c.name)}</option>`).join('')}
 async function check(){const {data:{user},error}=await supabase.auth.getUser();if(error){msg('تعذر التحقق من الجلسة: '+report(error),true);return false}if(!user)return false;const {data,error:err}=await supabase.from('admin_users').select('user_id').eq('user_id',user.id).maybeSingle();if(err){msg('تعذر التحقق من صلاحية المدير: '+report(err),true);return false}if(!data){msg('الحساب لا يمتلك صلاحية المدير. تحقق من جدول admin_users',true);return false}return true}
 async function enter(){const allowed=await check();$('loginPanel').classList.toggle('hide',allowed);$('dashboard').classList.toggle('hide',!allowed);$('logout').classList.toggle('hide',!allowed);if(allowed)await refresh()}
-$('forgotPassword').addEventListener('click',()=>{$('login').classList.add('hide');$('forgotPassword').classList.add('hide');$('recoveryRequest').classList.remove('hide');$('recoveryRequest').elements.recovery_email.value=$('login').elements.email.value||'';msg('أدخل بريد حساب المدير لاستلام رابط الاستعادة')});
-$('cancelRecovery').addEventListener('click',()=>{$('recoveryRequest').classList.add('hide');$('login').classList.remove('hide');$('forgotPassword').classList.remove('hide');msg('')});
-$('recoveryRequest').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget,button=form.querySelector('[type=submit]');button.disabled=true;try{const email=String(new FormData(form).get('recovery_email')||'').trim();const redirectTo=new URL(prefix + 'reset-password.html', location.href).href;const {error}=await supabase.auth.resetPasswordForEmail(email,{redirectTo});if(error)throw error;msg('إذا كان البريد مسجلاً، ستصلك رسالة استعادة. افتح أحدث رسالة فقط.')}catch(error){msg('تعذر إرسال رابط الاستعادة: '+report(error),true)}finally{button.disabled=false}});
 $('login').addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(e.currentTarget),btn=e.currentTarget.querySelector('button');btn.disabled=true;const {error}=await supabase.auth.signInWithPassword({email:String(fd.get('email')),password:String(fd.get('password'))});btn.disabled=false;if(error)return msg('تعذر تسجيل الدخول: '+report(error),true);await enter()});$('logout').addEventListener('click',async()=>{await supabase.auth.signOut();$('dashboard').classList.add('hide');$('loginPanel').classList.remove('hide');$('logout').classList.add('hide')});document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;editing=null;refresh().catch(err=>msg('تعذر تحميل القسم: '+report(err),true))}));
 async function refresh(){
  // Load only the selected tab: missing optional tables must not disable the entire dashboard.
