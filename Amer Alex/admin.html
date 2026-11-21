@@ -1,41 +1,50 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="ar"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>الإدارة | بوتيك العود الأزرق</title><link id="storeStyles" href="style.css" rel="stylesheet"/><style>body{font-family:system-ui,Tahoma,sans-serif} .hide{display:none!important}.notice{padding:12px;border-radius:12px;margin:12px 0;background:#e5f6ed;color:#145a36}.notice.error{background:#ffe9e9;color:#9b2222}button:disabled{opacity:.55;cursor:wait}</style></head><body><header><div class="bar"><a class="brand" href="index.html">بوتيك العود الأزرق<small>لوحة الإدارة</small></a><nav><a class="pill" href="index.html">فتح المتجر</a><button class="hide" id="logout">تسجيل الخروج</button></nav></div></header><main><div id="message" role="status"></div><section class="glass" id="loginPanel" style="max-width:480px;margin:30px auto"><h1>تسجيل دخول المدير</h1><form id="login"><label>البريد الإلكتروني<input autocomplete="username" name="email" required="" type="email"/></label><label>كلمة المرور<input autocomplete="current-password" minlength="6" name="password" required="" type="password"/></label><button class="primary">دخول</button></form><button type="button" id="forgotPassword" style="margin-top:12px;background:transparent;border:0;text-decoration:underline;cursor:pointer;color:inherit">نسيت كلمة المرور؟</button><form id="recoveryRequest" class="hide" style="margin-top:16px"><label>البريد الإلكتروني لاستعادة كلمة المرور<input name="recovery_email" type="email" autocomplete="email" required></label><button class="primary" type="submit">إرسال رابط الاستعادة</button><button type="button" id="cancelRecovery">رجوع</button></form></section><div class="hide" id="dashboard"><h1>إدارة المتجر</h1><nav class="row" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between"><button data-tab="products">المنتجات</button><button data-tab="categories">الأقسام</button><button data-tab="orders">الطلبات</button><button data-tab="settings">الإعدادات</button><button data-tab="banners">شاشة الإعلانات</button><button data-tab="scents">الروائح</button><button data-tab="features">مزايا المتجر</button><button data-tab="pages">الصفحات والسياسات</button></nav><section class="glass"><h2 id="formTitle"></h2><div id="formArea"></div></section><section class="glass"><h2>السجلات</h2><div id="records"></div></section></div></main><script>
-// The recovery UI is independent of the admin module so the button still works
-// when a database query or module import fails.
 (() => {
-  const byId = id => document.getElementById(id);
-  const showRecovery = () => {
-    byId('login').classList.add('hide');
-    byId('forgotPassword').classList.add('hide');
-    byId('recoveryRequest').classList.remove('hide');
-    byId('recoveryRequest').querySelector('[name="recovery_email"]').value =
-      byId('login').querySelector('[name="email"]').value || '';
-  };
-  byId('forgotPassword').addEventListener('click', showRecovery);
-  byId('cancelRecovery').addEventListener('click', () => {
-    byId('recoveryRequest').classList.add('hide');
-    byId('login').classList.remove('hide');
-    byId('forgotPassword').classList.remove('hide');
+  const get = id => document.getElementById(id);
+  const notice = get('message');
+  const recovery = get('recoveryRequest');
+  const login = get('login');
+  const forgot = get('forgotPassword');
+  function message(value, isError = false) {
+    notice.className = 'notice' + (isError ? ' error' : '');
+    notice.textContent = value;
+  }
+  forgot.addEventListener('click', () => {
+    login.classList.add('hide');
+    forgot.classList.add('hide');
+    recovery.classList.remove('hide');
+    recovery.elements.recovery_email.value = login.elements.email.value || '';
+    message('');
   });
-  byId('recoveryRequest').addEventListener('submit', async event => {
+  get('cancelRecovery').addEventListener('click', () => {
+    recovery.classList.add('hide');
+    login.classList.remove('hide');
+    forgot.classList.remove('hide');
+    message('');
+  });
+  recovery.addEventListener('submit', async event => {
     event.preventDefault();
-    const form = event.currentTarget;
-    const button = form.querySelector('[type="submit"]');
-    const notice = byId('message');
+    if (!recovery.reportValidity()) return;
+    const button = recovery.querySelector('button[type="submit"]');
     button.disabled = true;
-    notice.className = 'notice';
-    notice.textContent = 'جارٍ إرسال رابط الاستعادة…';
+    message('جارٍ إرسال رابط الاستعادة…');
     try {
-      const email = String(new FormData(form).get('recovery_email') || '').trim();
-      if (!email || !form.reportValidity()) return;
-      const { supabase } = await import('../supabase-config.js');
-      const redirectTo = new URL('../reset-password.html', location.href).href;
-      const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
+      // Independent from admin module, which can fail for unrelated database reasons.
+      const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      const client = createClient(
+        'https://eswsrdxhztgizqjnclnn.supabase.co',
+        'sb_publishable_eCOUMwrzy4sfyYrmkEXNEg_Vnc1hjwi',
+        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
+      );
+      const redirectTo = new URL('../reset-password.html', window.location.href).href;
+      const email = recovery.elements.recovery_email.value.trim();
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
       if (error) throw error;
-      notice.textContent = 'تم إرسال الطلب. افحص البريد الوارد والرسائل غير المرغوبة، واستخدم أحدث رابط.';
+      message('تم طلب رابط الاستعادة. افحص البريد الوارد والرسائل غير المرغوبة، واستخدم أحدث رسالة.');
     } catch (error) {
-      notice.className = 'notice error';
-      notice.textContent = 'تعذر إرسال رابط الاستعادة: ' + (error?.message || String(error));
+      console.error('Password recovery request failed:', error);
+      message('تعذر إرسال رابط الاستعادة: ' + (error?.message || String(error)), true);
     } finally {
       button.disabled = false;
     }
@@ -46,7 +55,7 @@
 // Supports admin.html at repository root OR one subfolder below it.
 const base = location.pathname.split('/').filter(Boolean);
 const inSubfolder = base.length > 2; // GitHub Pages: /repo/admin.html vs /repo/folder/admin.html
-const prefix = inSubfolder ? '../' : './';
+const prefix = '../';
 document.querySelector('#storeStyles').href = prefix + 'style.css';
 document.querySelectorAll('a[href="index.html"]').forEach(a => a.href = prefix + 'index.html');
 const {supabase,money,safe,report} = await import(prefix + 'supabase-config.js');
