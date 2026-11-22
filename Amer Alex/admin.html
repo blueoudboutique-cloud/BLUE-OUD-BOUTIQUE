@@ -37,7 +37,9 @@
         'sb_publishable_eCOUMwrzy4sfyYrmkEXNEg_Vnc1hjwi',
         { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
       );
-      const redirectTo = new URL('../reset-password.html', window.location.href).href;
+      const segments = window.location.pathname.split('/').filter(Boolean);
+      const adminIsInSubfolder = segments.length > 2;
+      const redirectTo = new URL(adminIsInSubfolder ? '../reset-password.html' : './reset-password.html', window.location.href).href;
       const email = recovery.elements.recovery_email.value.trim();
       const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
       if (error) throw error;
@@ -55,7 +57,7 @@
 // Supports admin.html at repository root OR one subfolder below it.
 const base = location.pathname.split('/').filter(Boolean);
 const inSubfolder = base.length > 2; // GitHub Pages: /repo/admin.html vs /repo/folder/admin.html
-const prefix = '../';
+const prefix = inSubfolder ? '../' : './';
 document.querySelector('#storeStyles').href = prefix + 'style.css';
 document.querySelectorAll('a[href="index.html"]').forEach(a => a.href = prefix + 'index.html');
 const {supabase,money,safe,report} = await import(prefix + 'supabase-config.js');
