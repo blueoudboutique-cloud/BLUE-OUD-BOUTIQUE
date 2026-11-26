@@ -35,11 +35,11 @@
       const client = createClient(
         'https://eswsrdxhztgizqjnclnn.supabase.co',
         'sb_publishable_eCOUMwrzy4sfyYrmkEXNEg_Vnc1hjwi',
-        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
+        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false, flowType: 'implicit', storageKey: 'blueoud-recovery-request' } }
       );
       const segments = window.location.pathname.split('/').filter(Boolean);
       const adminIsInSubfolder = segments.length > 2;
-      const redirectTo = new URL(adminIsInSubfolder ? '../reset-password.html' : './reset-password.html', window.location.href).href;
+      const redirectTo = 'https://blueoudboutique-cloud.github.io/BLUE-OUD-BOUTIQUE/reset-password.html';
       const email = recovery.elements.recovery_email.value.trim();
       const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
       if (error) throw error;
