@@ -1,0 +1,74 @@
+name: Blue Oud Boutique - Flutter Web
+
+on:
+  push:
+    branches:
+      - flutter-store
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flutter-web-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Flutter Store
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Analyze Dart Code
+        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+
+      - name: Build Production Website
+        run: |
+          flutter build web \
+            --release \
+            --base-href "/BLUE-OUD-BOUTIQUE/"
+
+      - name: Preserve Admin and Recovery Files
+        run: |
+          cp -R "Amer Alex" build/web/
+          cp reset-password.html build/web/
+          cp supabase-config.js build/web/
+          cp style.css build/web/
+          touch build/web/.nojekyll
+
+      - name: Upload Website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    name: Deploy Website
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
